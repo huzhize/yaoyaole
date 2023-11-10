@@ -1,4 +1,4 @@
-package org.example;
+package com.huzz.yyl;
 
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFColor;
@@ -26,18 +26,13 @@ import java.util.Map;
  * 46 18
  */
 public class App {  //1:3 完美
-    /**
-     * 84 22 3.8
-     * 73 19
-     */
-    static int RATIO = 3;   //W/H
-    static int SM = 1;
+    static int RATIO = 1;   //W/H 格子宽高比例
+    static int SM = 5;  //图片缩放比例
+    //static int COL_WIDTH = (short)37.79* 40;  //不再手动设置列宽，直接使用默认列宽，然后根据比例调整行高
     static short ROW_HEIGHT = (short)14.175* 10;
-    //static int COL_WIDTH = (short)37.79* 40;
-
+    static float ROW_HEIGHT_POINT = 18.25f; //需要根据实际列宽调整
     public static void main(String[] args) throws IOException {
-
-        BufferedImage image = ImageIO.read(new File("D:\\test\\4.png"));
+        BufferedImage image = ImageIO.read(new File("D:\\test\\5.png"));
         Workbook workbook = new XSSFWorkbook();
         Sheet sheet = workbook.createSheet();
         // 获取图像的像素数据
@@ -47,7 +42,7 @@ public class App {  //1:3 完美
         for (int y = 0; y*SM < height; y++) {
             for(int count = 0;count<RATIO;count++){
                 Row row = sheet.createRow(y*RATIO+count);
-                row.setHeightInPoints((float) 18.25);   //行高
+                row.setHeightInPoints((float) ROW_HEIGHT_POINT);   //行高
                 for (int x = 0; x*SM < width; x++) {
                     java.awt.Color color = new Color(image.getRGB(x*SM, y*SM));
                     String key = color.getRed()+"_"+color.getGreen()+"_"+color.getBlue();
@@ -63,28 +58,18 @@ public class App {  //1:3 完美
                         cellStyleMap.put(key,cellStyle);
                     }
                     Cell cell = row.createCell(x);
-
                     cell.setCellStyle(cellStyle);
                 }
             }
         }
-
-        /*for (int x = 0; x < width; x++){
-            sheet.setColumnWidth(x,COL_WIDTH);  //列宽 5712/31.7
-        }*/
-
+        for (int x = 0; x < width; x++){sheet.setColumnWidth(x,740);};  //列宽 5712/31.7
         System.out.println("ColumnWidth: "+sheet.getColumnWidth(0));    //     180 *31.7 = 5712
         System.out.println("RowHeight: "+sheet.getRow(0).getHeight());  //point*20  27   400*14.81 = 27
-
         // 将工作簿写入文件
-        try  {
-            FileOutputStream outputStream = new FileOutputStream("D:\\test\\4.xlsx");
-            workbook.write(outputStream);
-            outputStream.flush();
-            outputStream.close();
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+        FileOutputStream outputStream = new FileOutputStream("D:\\test\\大海.xlsx");
+        workbook.write(outputStream);
+        outputStream.flush();
+        outputStream.close();
         workbook.close();
     }
 }

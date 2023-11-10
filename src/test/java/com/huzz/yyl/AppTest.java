@@ -1,4 +1,4 @@
-package org.example;
+package com.huzz.yyl;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
