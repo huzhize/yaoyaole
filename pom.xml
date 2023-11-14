@@ -55,6 +55,12 @@
       <version>1.5.2</version>
     </dependency>
 
+    <dependency>
+      <groupId>org.seleniumhq.selenium</groupId>
+      <artifactId>selenium-java</artifactId>
+      <version>3.141.59</version> <!-- 请根据最新版本进行替换 -->
+    </dependency>
+
 
   </dependencies>
 </project>
